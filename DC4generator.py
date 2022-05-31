@@ -19,7 +19,7 @@ Author: 冬夜 @esuOneGov, esuOneGov@galgamer.eu.org
 
  4. 執行完上面的四步，生成的激活碼必定可以通過 stage1 到 stage3.
 
-運行這個程序分別需要 1.5G 的磁盤空間和 RAM 空間，完整跑完一次需要大約五分鐘。
+運行這個程序分別需要 1.3G 的磁盤空間和 RAM 空間，完整跑完一次需要大約五分鐘。
 '''
 import time, itertools, sqlite3
 
@@ -134,6 +134,7 @@ def stage2test(str2to7):
 # 返回值：沒有
 # ------------------------------------------------------
 def stage2gen():
+    global DB
     # init db
     DB = sqlite3.connect(':memory:', check_same_thread=False)
     DB.execute('CREATE TABLE IF NOT EXISTS str2to7 (valid TEXT PRIMARY KEY, edx INTEGER)')
@@ -152,11 +153,11 @@ def stage2gen():
     print(f'{count} serial[2:7] found.')
 
     # copy to hdd
-    DB_hdd = sqlite3.connect(DB_FILE)
-    DB.backup(DB_hdd)
-    DB_hdd.commit()
-    DB_hdd.close()
-    DB.close()
+    #DB_hdd = sqlite3.connect(DB_FILE)
+    #DB.backup(DB_hdd)
+    #DB_hdd.commit()
+    #DB_hdd.close()
+    #DB.close()
 
 
 # ------------------------------------------------------
@@ -180,10 +181,11 @@ def unchange_order(target):
 # 返回值：沒有
 # ------------------------------------------------------
 def stage1gen():
-    DB_memory = sqlite3.connect(':memory:')
-    DB_hdd = sqlite3.connect(DB_FILE)
-    DB_hdd.backup(DB_memory)
-    DB_hdd.close()
+    global DB
+    DB_memory = DB
+    #DB_hdd = sqlite3.connect(DB_FILE)
+    #DB_hdd.backup(DB_memory)
+    #DB_hdd.close()
 
     # ------------------------------------------------------
     # 爲了快速通過 serial[2:7] 找到 serial[7:11]，使用提前運算好的值直接查表，可以節省上千萬次的運算時間。
@@ -208,14 +210,14 @@ def stage1gen():
     DB_hdd.close()
     # print('hdd closed')
     DB_memory.close()
-    # print('mem closed')
+    print('\nDB closed')
 
 
 # ------------------------------------------------------
 # 顯示數據庫保存到硬盤上時候的進度
 # ------------------------------------------------------
 def progress(status, remaining, total):
-    print(f'保存中 {total - remaining} / {total} ...')
+    print(f'\r保存中 {total - remaining} / {total} ...', end='')
 
 
 # 生成序列號的字母表
