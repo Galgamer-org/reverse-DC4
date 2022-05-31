@@ -69,6 +69,7 @@ def calc(serial, __, data_calc_a_value4, _, data_strange_op8):
 
     if edx == result2:
         print(f'stage 2 pass {serial}')
+        pass
     else:
         return
 
@@ -199,7 +200,10 @@ def foo2(l):
 
 if __name__ == '__main__':
     prepare_data()
-    #calc(ORIGIN, data_calc_a_value2, data_calc_a_value4, data_strange_op, #data_strange_op8)
+    #start = time.time()
+    #for _ in range(1000000):
+    #    calc(ORIGIN, data_calc_a_value2, data_calc_a_value4, data_strange_op, data_strange_op8)
+    #print(time.time() - start)
     #exit(0)
 
     now = time.time()
